@@ -65,6 +65,13 @@ def add():
    if not title or not post:
       flash("All fields are rewuired. Please try again.")
       return redirect(url_for('main'))
+   else:
+      g.db = connect_db()
+      g.db.execute('insert into posts (title, post) values (?, ?)', [request.form['title'], request.form['post']])
+      g.db.commit()
+      g.db.close()
+      flash('New entry was successfully posted!')
+      return redirect(url_for('main'))
 
 if __name__ == '__main__':
    app.run(host='192.168.187.159',debug=True)
